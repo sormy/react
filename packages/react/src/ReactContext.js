@@ -52,6 +52,7 @@ export function createContext<T>(
     _context: context,
   };
 
+  /*
   let hasWarnedAboutUsingNestedContextConsumers = false;
   let hasWarnedAboutUsingConsumerProvider = false;
 
@@ -114,14 +115,16 @@ export function createContext<T>(
     });
     // $FlowFixMe: Flow complains about missing properties because it doesn't understand defineProperty
     context.Consumer = Consumer;
-  } else {
+  } else */{
     context.Consumer = context;
   }
 
+  /*
   if (__DEV__) {
     context._currentRenderer = null;
     context._currentRenderer2 = null;
   }
+  */
 
   return context;
 }

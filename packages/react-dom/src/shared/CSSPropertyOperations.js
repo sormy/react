@@ -44,6 +44,11 @@ export function createDangerousStringForStyles(styles) {
   }
 }
 
+// IE 6/7 uses different property for styles
+function getStyles(element) {
+  return element.style || element.currentStyle;
+}
+
 /**
  * Sets the value for multiple styles on a node.  If a value is specified as
  * '' (empty string), the corresponding style property will be unset.
@@ -52,7 +57,7 @@ export function createDangerousStringForStyles(styles) {
  * @param {object} styles
  */
 export function setValueForStyles(node, styles) {
-  const style = node.style;
+  const style = getStyles(node);
   for (let styleName in styles) {
     if (!styles.hasOwnProperty(styleName)) {
       continue;
@@ -71,7 +76,7 @@ export function setValueForStyles(node, styles) {
     if (styleName === 'float') {
       styleName = 'cssFloat';
     }
-    if (isCustomProperty) {
+    if (isCustomProperty && style.setProperty) {
       style.setProperty(styleName, styleValue);
     } else {
       style[styleName] = styleValue;

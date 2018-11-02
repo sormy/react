@@ -84,10 +84,12 @@ import {
   scheduleWork,
 } from './ReactFiberScheduler';
 
+/*
 let didWarnAboutUndefinedSnapshotBeforeUpdate: Set<mixed> | null = null;
 if (__DEV__) {
   didWarnAboutUndefinedSnapshotBeforeUpdate = new Set();
 }
+*/
 
 export function logError(boundary: Fiber, errorInfo: CapturedValue<mixed>) {
   const source = errorInfo.source;
@@ -198,6 +200,7 @@ function commitBeforeMutationLifeCycles(
             prevProps,
             prevState,
           );
+          /*
           if (__DEV__) {
             const didWarnSet = ((didWarnAboutUndefinedSnapshotBeforeUpdate: any): Set<
               mixed,
@@ -212,6 +215,7 @@ function commitBeforeMutationLifeCycles(
               );
             }
           }
+          */
           instance.__reactInternalSnapshotBeforeUpdate = snapshot;
           stopPhaseTimer();
         }

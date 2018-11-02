@@ -43,7 +43,8 @@ function isInDocument(node) {
 function getActiveElementDeep() {
   let win = window;
   let element = getActiveElement();
-  while (element instanceof win.HTMLIFrameElement) {
+  // IE 6/7 has no HTMLIFrameElement
+  while (element.tagName === "IFRAME") {
     // Accessing the contentDocument of a HTMLIframeElement can cause the browser
     // to throw, e.g. if it has a cross-origin src attribute
     try {

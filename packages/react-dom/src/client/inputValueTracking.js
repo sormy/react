@@ -48,6 +48,23 @@ function getValueFromNode(node: HTMLInputElement): string {
   return value;
 }
 
+const isOldIE = /MSIE [67]/.test(navigator.userAgent);
+
+function trackValueOnNodeOldIE(node: any): ?ValueTracker {
+  const tracker = {
+    getValue() {
+      return undefined;
+    },
+    setValue(value) {
+      // stub
+    },
+    stopTracking() {
+      // stub
+    },
+  };
+  return tracker;
+}
+
 function trackValueOnNode(node: any): ?ValueTracker {
   const valueField = isCheckable(node) ? 'checked' : 'value';
   const descriptor = Object.getOwnPropertyDescriptor(
@@ -109,7 +126,7 @@ export function track(node: ElementWithValueTracker) {
   }
 
   // TODO: Once it's just Fiber we can move this to node._wrapperState
-  node._valueTracker = trackValueOnNode(node);
+  node._valueTracker = isOldIE ? trackValueOnNodeOldIE(node) : trackValueOnNode(node);
 }
 
 export function updateValueIfChanged(node: ElementWithValueTracker) {

@@ -35,6 +35,7 @@ const ReactStrictModeWarnings = {
   flushLegacyContextWarning(): void {},
 };
 
+/*
 if (__DEV__) {
   const LIFECYCLE_SUGGESTIONS = {
     UNSAFE_componentWillMount: 'componentDidMount',
@@ -359,5 +360,6 @@ if (__DEV__) {
     );
   };
 }
+*/
 
 export default ReactStrictModeWarnings;

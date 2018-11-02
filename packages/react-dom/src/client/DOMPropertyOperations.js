@@ -29,6 +29,7 @@ export function getValueForProperty(
   expected: mixed,
   propertyInfo: PropertyInfo,
 ): mixed {
+  /*
   if (__DEV__) {
     if (propertyInfo.mustUseProperty) {
       const {propertyName} = propertyInfo;
@@ -79,6 +80,7 @@ export function getValueForProperty(
       }
     }
   }
+  */
 }
 
 /**
@@ -91,6 +93,7 @@ export function getValueForAttribute(
   name: string,
   expected: mixed,
 ): mixed {
+  /*
   if (__DEV__) {
     if (!isAttributeNameSafe(name)) {
       return;
@@ -104,7 +107,16 @@ export function getValueForAttribute(
     }
     return value;
   }
+  */
 }
+
+// Test if setting empty value to boolean property actually works as expected.
+// This test will fail for IE 6/7 and will pass for modern browsers.
+const supportsEmptyBoolProps = function () {
+  const input = document.createElement("input");
+  input.setAttribute("disabled", "");
+  return !!input.disabled;
+}();
 
 /**
  * Sets the value for a property on a node.
@@ -151,6 +163,25 @@ export function setValueForProperty(
     }
     return;
   }
+
+  if (!supportsEmptyBoolProps) {
+    if (value === null) {
+      node.removeAttribute(name);
+    } else {
+      const {type} = propertyInfo;
+      if (type === BOOLEAN || (type === OVERLOADED_BOOLEAN && value === true)) {
+        if (value) {
+          node.setAttribute(name, name);
+        } else {
+          node.removeAttribute(name);
+        }
+      } else {
+        node.setAttribute(name, '' + value);
+      }
+    }
+    return
+  }
+
   // The rest are treated as attributes with special cases.
   const {attributeName, attributeNamespace} = propertyInfo;
   if (value === null) {

@@ -67,6 +67,7 @@ function createAndAccumulateChangeEvent(inst, nativeEvent, target) {
  */
 let activeElement = null;
 let activeElementInst = null;
+let activeElementValue = null;
 
 /**
  * SECTION: handle `change` event
@@ -105,6 +106,10 @@ function runEventInBatch(event) {
 
 function getInstIfValueChanged(targetInst) {
   const targetNode = getNodeFromInstance(targetInst);
+  if (targetNode.value === activeElementValue) {
+    return;
+  }
+  activeElementValue = targetNode.value;
   if (inputValueTracking.updateValueIfChanged(targetNode)) {
     return targetInst;
   }
@@ -136,6 +141,7 @@ if (canUseDOM) {
 function startWatchingForValueChange(target, targetInst) {
   activeElement = target;
   activeElementInst = targetInst;
+  activeElementValue = target.value;
   activeElement.attachEvent('onpropertychange', handlePropertyChange);
 }
 
@@ -150,6 +156,7 @@ function stopWatchingForValueChange() {
   activeElement.detachEvent('onpropertychange', handlePropertyChange);
   activeElement = null;
   activeElementInst = null;
+  activeElementValue = null;
 }
 
 /**
@@ -160,6 +167,14 @@ function handlePropertyChange(nativeEvent) {
   if (nativeEvent.propertyName !== 'value') {
     return;
   }
+
+  // IE6/7 fix: check if JS value change was made.
+  // True if value and data-ie-value attribute are equal
+  const oldValue = nativeEvent.srcElement.getAttribute('data-ie-value');
+  if (oldValue !== activeElementValue) {
+    activeElementValue = oldValue;
+  }
+
   if (getInstIfValueChanged(activeElementInst)) {
     manualDispatchChangeEvent(nativeEvent);
   }

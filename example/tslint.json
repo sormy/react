@@ -1,0 +1,20 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react"
+  ],
+  "jsRules": {},
+  "rules": {
+    "semicolon": [true, "never"],
+    "quotemark": [true, "double", "jsx-double"],
+    "interface-name" : [true, "never-prefix"],
+    "no-console": [false],
+    "jsx-no-bind": [true],
+    "object-literal-sort-keys": [false],
+    // typescript will preserve trailing commas and IE6-7 won't be able to parse the result
+    // seems like it is regression: https://github.com/Microsoft/TypeScript/issues/271
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}]
+  },
+  "rulesDirectory": []
+}

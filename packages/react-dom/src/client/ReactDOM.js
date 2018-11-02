@@ -448,7 +448,8 @@ function shouldHydrateDueToLegacyHeuristic(container) {
   return !!(
     rootElement &&
     rootElement.nodeType === ELEMENT_NODE &&
-    rootElement.hasAttribute(ROOT_ATTRIBUTE_NAME)
+    (rootElement.hasAttribute && rootElement.hasAttribute(ROOT_ATTRIBUTE_NAME)
+      || typeof rootElement[ROOT_ATTRIBUTE_NAME] !== 'undefined')
   );
 }
 
@@ -471,6 +472,7 @@ function legacyCreateRootFromDOMContainer(
     let warned = false;
     let rootSibling;
     while ((rootSibling = container.lastChild)) {
+      /*
       if (__DEV__) {
         if (
           !warned &&
@@ -486,6 +488,7 @@ function legacyCreateRootFromDOMContainer(
           );
         }
       }
+      */
       container.removeChild(rootSibling);
     }
   }

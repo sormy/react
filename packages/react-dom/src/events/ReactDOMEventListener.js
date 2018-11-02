@@ -22,6 +22,8 @@ import {getClosestInstanceFromNode} from '../client/ReactDOMComponentTree';
 import SimpleEventPlugin from './SimpleEventPlugin';
 import {getRawEventName} from './DOMTopLevelEventTypes';
 
+import isEventSupported from './isEventSupported';
+
 const {isInteractiveTopLevelEventType} = SimpleEventPlugin;
 
 const CALLBACK_BOOKKEEPING_POOL_SIZE = 10;
@@ -125,6 +127,16 @@ export function isEnabled() {
   return _enabled;
 }
 
+function getPlatformSpecificEventName(eventName) {
+  if (eventName === "focus" && !isEventSupported("focus") && isEventSupported("focusin")) {
+    return "focusin";
+  }
+  if (eventName === "blur" && !isEventSupported("blur") && isEventSupported("focusout")) {
+    return "focusout";
+  }
+  return eventName;
+}
+
 /**
  * Traps top-level events by using event bubbling.
  *
@@ -147,7 +159,7 @@ export function trapBubbledEvent(
 
   addEventBubbleListener(
     element,
-    getRawEventName(topLevelType),
+    getPlatformSpecificEventName(getRawEventName(topLevelType)),
     // Check if interactive and wrap in interactiveUpdates
     dispatch.bind(null, topLevelType),
   );
@@ -175,7 +187,7 @@ export function trapCapturedEvent(
 
   addEventCaptureListener(
     element,
-    getRawEventName(topLevelType),
+    getPlatformSpecificEventName(getRawEventName(topLevelType)),
     // Check if interactive and wrap in interactiveUpdates
     dispatch.bind(null, topLevelType),
   );

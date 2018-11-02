@@ -127,6 +127,7 @@ if (__DEV__) {
   // ReactDOM15.unstable_renderSubtreeIntoContainer(reactDOM16Component,
   // ...)) which otherwise throws a "_processChildContext is not a function"
   // exception.
+  /*
   Object.defineProperty(fakeInternalInstance, '_processChildContext', {
     enumerable: false,
     value: function() {
@@ -142,6 +143,7 @@ if (__DEV__) {
     },
   });
   Object.freeze(fakeInternalInstance);
+  */
 }
 
 export function applyDerivedStateFromProps(

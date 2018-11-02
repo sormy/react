@@ -144,7 +144,8 @@ function addEventTypeNameToConfig(
   [topEvent, event]: EventTuple,
   isInteractive: boolean,
 ) {
-  const capitalizedEvent = event[0].toUpperCase() + event.slice(1);
+  // IE 6/7 has no array-like access for strings
+  const capitalizedEvent = event.charAt(0).toUpperCase() + event.slice(1);
   const onEvent = 'on' + capitalizedEvent;
 
   const type = {

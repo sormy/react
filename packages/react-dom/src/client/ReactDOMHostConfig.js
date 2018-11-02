@@ -416,11 +416,15 @@ export function removeChildFromContainer(
   }
 }
 
+function getStyles(element) {
+  return element.style || element.currentStyle;
+}
+
 export function hideInstance(instance: Instance): void {
   // TODO: Does this work for all element types? What about MathML? Should we
   // pass host context to this method?
   instance = ((instance: any): HTMLElement);
-  instance.style.display = 'none';
+  getStyles(instance).display = 'none';
 }
 
 export function hideTextInstance(textInstance: TextInstance): void {
@@ -437,7 +441,7 @@ export function unhideInstance(instance: Instance, props: Props): void {
       ? styleProp.display
       : null;
   // $FlowFixMe Setting a style property to null is the valid way to reset it.
-  instance.style.display = display;
+  getStyles(instance).display = display;
 }
 
 export function unhideTextInstance(

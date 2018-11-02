@@ -1,0 +1,13 @@
+.clock {
+  color: darken($red, 30%);
+  font-weight: bold;
+  background: lighten($red, 30%);
+}
+
+@media only screen and (max-width: 500px) {
+  .clock {
+    color: darken($blue, 30%);
+    background: lighten($blue, 30%);
+    opacity: 0.5
+  }
+}

@@ -63,6 +63,7 @@ import {
 
 let hasBadMapPolyfill;
 
+/*
 if (__DEV__) {
   hasBadMapPolyfill = false;
   try {
@@ -79,6 +80,7 @@ if (__DEV__) {
     hasBadMapPolyfill = true;
   }
 }
+*/
 
 // A Fiber is work on a Component that needs to be done or was done. There can
 // be more than one per component.

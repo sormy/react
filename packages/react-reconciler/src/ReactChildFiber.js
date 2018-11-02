@@ -687,6 +687,7 @@ function ChildReconciler(shouldTrackSideEffects) {
   /**
    * Warns if there is a duplicate or missing key
    */
+  /*
   function warnOnInvalidKey(
     child: mixed,
     knownKeys: Set<string> | null,
@@ -726,8 +727,8 @@ function ChildReconciler(shouldTrackSideEffects) {
           break;
       }
     }
-    return knownKeys;
   }
+  */
 
   function reconcileChildrenArray(
     returnFiber: Fiber,
@@ -754,6 +755,7 @@ function ChildReconciler(shouldTrackSideEffects) {
     // If you change this code, also update reconcileChildrenIterator() which
     // uses the same algorithm.
 
+    /*
     if (__DEV__) {
       // First, validate keys.
       let knownKeys = null;
@@ -762,6 +764,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         knownKeys = warnOnInvalidKey(child, knownKeys);
       }
     }
+    */
 
     let resultingFirstChild: Fiber | null = null;
     let previousNewFiber: Fiber | null = null;
@@ -904,6 +907,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         'React. Please file an issue.',
     );
 
+    /*
     if (__DEV__) {
       // We don't support rendering Generators because it's a mutation.
       // See https://github.com/facebook/react/issues/12995
@@ -946,6 +950,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         }
       }
     }
+    */
 
     const newChildren = iteratorFn.call(newChildrenIterable);
     invariant(newChildren != null, 'An iterable object provided no iterator.');

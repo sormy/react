@@ -14,8 +14,63 @@ const randomKey = Math.random()
 const internalInstanceKey = '__reactInternalInstance$' + randomKey;
 const internalEventHandlersKey = '__reactEventHandlers$' + randomKey;
 
+// IE 6/7 will fail this check
+let supportsCustomPropsOnTextNodes = false;
+try {
+  document.createTextNode("test")[internalInstanceKey] = true;
+  supportsCustomPropsOnTextNodes = true;
+} catch (e) {}
+
+const textNodes = new Map()
+
+function isAttached(node) {
+  while (node) {
+    node = node.parentNode;
+    if (node === document) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function recycleTextNodes() {
+  var toRecycle = [];
+  textNodes.forEach(function (hostInst, textNode) {
+    if (!isAttached(textNode.parentNode)) {
+      toRecycle.push([textNode, hostInst]);
+    }
+  })
+  toRecycle.forEach(function ([textNode, hostInst]) {
+    textNodes.delete(textNode);
+  })
+}
+
+function recycleTextNodesTask() {
+  setTimeout(function () {
+    recycleTextNodesTask();
+  }, 10000);
+}
+
+recycleTextNodesTask();
+
+function getNodeInstance(node) {
+  if (!supportsCustomPropsOnTextNodes && node.nodeType === 3) {
+    return textNodes.get(node);
+  } else {
+    return node[internalInstanceKey];
+  }
+}
+
+function setNodeInstance(node, hostInst) {
+  if (!supportsCustomPropsOnTextNodes && node.nodeType === 3) {
+    textNodes.set(node, hostInst);
+  } else {
+    node[internalInstanceKey] = hostInst;
+  }
+}
+
 export function precacheFiberNode(hostInst, node) {
-  node[internalInstanceKey] = hostInst;
+  setNodeInstance(node, hostInst);
 }
 
 /**
@@ -23,11 +78,13 @@ export function precacheFiberNode(hostInst, node) {
  * ReactDOMTextComponent instance ancestor.
  */
 export function getClosestInstanceFromNode(node) {
-  if (node[internalInstanceKey]) {
-    return node[internalInstanceKey];
+  const hostInst = getNodeInstance(node);
+
+  if (hostInst) {
+    return hostInst;
   }
 
-  while (!node[internalInstanceKey]) {
+  while (!getNodeInstance(node)) {
     if (node.parentNode) {
       node = node.parentNode;
     } else {
@@ -37,7 +94,7 @@ export function getClosestInstanceFromNode(node) {
     }
   }
 
-  let inst = node[internalInstanceKey];
+  let inst = getNodeInstance(node);
   if (inst.tag === HostComponent || inst.tag === HostText) {
     // In Fiber, this will always be the deepest root.
     return inst;
@@ -51,7 +108,7 @@ export function getClosestInstanceFromNode(node) {
  * instance, or null if the node was not rendered by this React.
  */
 export function getInstanceFromNode(node) {
-  const inst = node[internalInstanceKey];
+  const inst = getNodeInstance(node);
   if (inst) {
     if (inst.tag === HostComponent || inst.tag === HostText) {
       return inst;

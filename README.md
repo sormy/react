@@ -1,77 +1,68 @@
-# [React](https://reactjs.org/) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react) [![Coverage Status](https://img.shields.io/coveralls/facebook/react/master.svg?style=flat)](https://coveralls.io/github/facebook/react?branch=master) [![CircleCI Status](https://circleci.com/gh/facebook/react.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/facebook/react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)
+# React for ancient IE 6/7
 
-React is a JavaScript library for building user interfaces.
+## Goal
 
-* **Declarative:** React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.
-* **Component-Based:** Build encapsulated components that manage their own state, then compose them to make complex UIs. Since component logic is written in JavaScript instead of templates, you can easily pass rich data through your app and keep state out of the DOM.
-* **Learn Once, Write Anywhere:** We don't make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code. React can also render on the server using Node and power mobile apps using [React Native](https://facebook.github.io/react-native/).
+The goal of this fork is to run React applications on Internet Explorer Mobile 6/7 running
+on Windows CE 6/7 (used on some embedded devices, like MC31/MC32 hand scanners).
 
-[Learn how to use React in your own project](https://reactjs.org/docs/getting-started.html).
+This is the fork of React 16.x that is working on IE6/7.
 
-## Installation
+The test application is working well but it is working on IE6/7 much slower than React 14.x fork.
 
-React has been designed for gradual adoption from the start, and **you can use as little or as much React as you need**:
+I also found that React 16.x is leaking on IE6/7, most likely due to garbage collector bugs
+in IE6/7 (cross-references between DOM and JavaScript objects in fiber core).
 
-* Use [Online Playgrounds](https://reactjs.org/docs/getting-started.html#online-playgrounds) to get a taste of React.
-* [Add React to a Website](https://reactjs.org/docs/add-react-to-a-website.html) as a `<script>` tag in one minute.
-* [Create a New React App](https://reactjs.org/docs/create-a-new-react-app.html) if you're looking for a powerful JavaScript toolchain.
+## Status
 
-You can use React as a `<script>` tag from a [CDN](https://reactjs.org/docs/cdn-links.html), or as a `react` package on [npm](https://www.npmjs.com/).
+This version looks working but on some examples it is leaking. Feel free to submit a PR if you will
+find a way to fix memory leak issue.
 
-## Documentation
+Please use React 14.x version of this package if you need more stable React on IE6/7 without memory
+leaks but without Fragment support.
 
-You can find the React documentation [on the website](https://reactjs.org/docs).  
+## Altered packages
 
-Check out the [Getting Started](https://reactjs.org/docs/getting-started.html) page for a quick overview.
+These packages were fixed for IE 6/7 compatibility:
 
-The documentation is divided into several sections:
+- react
+- react-dom
+- react-reconciler (dependency)
+- events (dependency)
 
-* [Tutorial](https://reactjs.org/tutorial/tutorial.html)
-* [Main Concepts](https://reactjs.org/docs/hello-world.html)
-* [Advanced Guides](https://reactjs.org/docs/jsx-in-depth.html)
-* [API Reference](https://reactjs.org/docs/react-api.html)
-* [Where to Get Support](https://reactjs.org/community/support.html)
-* [Contributing Guide](https://reactjs.org/docs/how-to-contribute.html)
+## Incompatibilities
 
-You can improve it by sending pull requests to [this repository](https://github.com/reactjs/reactjs.org).
+Vanilla React incompatibilities with IE 6/7:
 
-## Examples
+- `Set` is not available, no perfect polyfill but Sets are mostly used in DEV-hooks
+- `Map` is not available, no perfect polyfill but Maps are mostly used in DEV-hooks
+- `node.style` is not available
+- `hasAttribute()` is not available
+- `setAttribute(property, '')` removes the property instead of setting it
+- `textContent` is not available
+- get/set propery descriptors are not available
+- no `focus`/`blur` events, use `focusin`/`focusout` instead
+- no `change`  event on input fields
+- `string[index]` is not available, use `string.charAt(index)` instead
 
-We have several examples [on the website](https://reactjs.org/). Here is the first one to get you started:
+## Transpilation
 
-```jsx
-class HelloMessage extends React.Component {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
+The result file should be transpiled with the following options to run on IE 6/7:
 
-ReactDOM.render(
-  <HelloMessage name="Taylor" />,
-  document.getElementById('container')
-);
-```
+- target: es3 (or es5)
+- loose: true
+- es3 reserved keywords escaping
 
-This example will render "Hello Taylor" into a container on the page.
+## TODO
 
-You'll notice that we used an HTML-like syntax; [we call it JSX](https://reactjs.org/docs/introducing-jsx.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. If you're using React as a `<script>` tag, read [this section](https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx) on integrating JSX; otherwise, the [recommended JavaScript toolchains](https://reactjs.org/docs/create-a-new-react-app.html) handle it automatically.
+- (IMPORTANT) find why it is leaking, see PageStack component
+- the included polyfill is not perfect, it is better to replace `new Set()` with alternative implementation
+- the included polyfill is not perfect, it is better to replace `new Map()` with alternative implementation
+- add notes for all changes
+- verify `select` tag
+- add better and performant recycle for textNodes
+- detect if property accessors are available and disable `__DEV__` parts of code only if property
+  accessors are no available instead of commenting them for all platforms
 
-## Contributing
-
-The main purpose of this repository is to continue to evolve React core, making it faster and easier to use. Development of React happens in the open on GitHub, and we are grateful to the community for contributing bugfixes and improvements. Read below to learn how you can take part in improving React.
-
-### [Code of Conduct](https://code.facebook.com/codeofconduct)
-
-Facebook has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://code.facebook.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
-
-### [Contributing Guide](https://reactjs.org/contributing/how-to-contribute.html)
-
-Read our [contributing guide](https://reactjs.org/contributing/how-to-contribute.html) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to React.
-
-### Good First Issues
-
-To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/facebook/react/labels/good%20first%20issue) that contain bugs which have a relatively limited scope. This is a great place to get started.
-
-### License
+## License
 
 React is [MIT licensed](./LICENSE).

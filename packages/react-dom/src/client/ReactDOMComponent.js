@@ -313,6 +313,19 @@ function setInitialDOMProperties(
         ensureListeningTo(rootContainerElement, propKey);
       }
     } else if (nextProp != null) {
+      // IE6/7 fix: for input and textarea we set data-ie-value attribute first
+      // to distinguish value setter made by JS from user event value changes
+      if (canUseDOM && !!window.attachEvent
+        && name === 'value'
+        && (domElement.tagName === 'INPUT' || domElement.tagName === 'TEXTAREA')
+      ) {
+        DOMPropertyOperations.setValueForProperty(
+          domElement,
+          'data-ie-value',
+          value,
+          isCustomComponentTag,
+        );
+      }
       DOMPropertyOperations.setValueForProperty(
         domElement,
         propKey,
@@ -917,6 +930,7 @@ export function diffHydratedProperties(
 
   assertValidProps(tag, rawProps);
 
+  /*
   if (__DEV__) {
     extraAttributeNames = new Set();
     const attributes = domElement.attributes;
@@ -941,6 +955,7 @@ export function diffHydratedProperties(
       }
     }
   }
+  */
 
   let updatePayload = null;
   for (const propKey in rawProps) {
@@ -980,7 +995,7 @@ export function diffHydratedProperties(
         }
         ensureListeningTo(rootContainerElement, propKey);
       }
-    } else if (
+    }/* else if (
       __DEV__ &&
       // Convince Flow we've calculated it (it's DEV-only in this method.)
       typeof isCustomComponentTag === 'boolean'
@@ -1089,6 +1104,7 @@ export function diffHydratedProperties(
         }
       }
     }
+    */
   }
 
   if (__DEV__) {

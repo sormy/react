@@ -46,6 +46,7 @@ function hasValidKey(config) {
   return config.key !== undefined;
 }
 
+/*
 function defineKeyPropWarningGetter(props, displayName) {
   const warnAboutAccessingKey = function() {
     if (!specialPropKeyWarningShown) {
@@ -87,6 +88,7 @@ function defineRefPropWarningGetter(props, displayName) {
     configurable: true,
   });
 }
+*/
 
 /**
  * Factory method to create a new React element. This no longer adheres to
@@ -227,6 +229,7 @@ export function createElement(type, config, children) {
       }
     }
   }
+  /*
   if (__DEV__) {
     if (key || ref) {
       const displayName =
@@ -241,6 +244,7 @@ export function createElement(type, config, children) {
       }
     }
   }
+  */
   return ReactElement(
     type,
     key,

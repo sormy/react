@@ -385,7 +385,8 @@ const properties = {};
 });
 
 const CAMELIZE = /[\-\:]([a-z])/g;
-const capitalize = token => token[1].toUpperCase();
+// IE 6/7 has no array-like access for strings
+const capitalize = token => token.charAt(1).toUpperCase();
 
 // This is a list of all SVG attributes that need special casing, namespacing,
 // or boolean value assignment. Regular attributes that just accept strings

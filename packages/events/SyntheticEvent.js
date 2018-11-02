@@ -169,6 +169,7 @@ Object.assign(SyntheticEvent.prototype, {
   destructor: function() {
     const Interface = this.constructor.Interface;
     for (const propName in Interface) {
+      /*
       if (__DEV__) {
         Object.defineProperty(
           this,
@@ -178,6 +179,8 @@ Object.assign(SyntheticEvent.prototype, {
       } else {
         this[propName] = null;
       }
+      */
+      this[propName] = null;
     }
     this.dispatchConfig = null;
     this._targetInst = null;
@@ -186,6 +189,7 @@ Object.assign(SyntheticEvent.prototype, {
     this.isPropagationStopped = functionThatReturnsFalse;
     this._dispatchListeners = null;
     this._dispatchInstances = null;
+    /*
     if (__DEV__) {
       Object.defineProperty(
         this,
@@ -219,6 +223,7 @@ Object.assign(SyntheticEvent.prototype, {
         getPooledWarningPropertyDefinition('stopPropagation', () => {}),
       );
     }
+    */
   },
 });
 
@@ -257,6 +262,7 @@ addEventPoolingTo(SyntheticEvent);
  * @param {?object} getVal
  * @return {object} defineProperty object
  */
+/*
 function getPooledWarningPropertyDefinition(propName, getVal) {
   const isFunction = typeof getVal === 'function';
   return {
@@ -296,6 +302,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
     );
   }
 }
+*/
 
 function getPooledEvent(dispatchConfig, targetInst, nativeEvent, nativeInst) {
   const EventConstructor = this;

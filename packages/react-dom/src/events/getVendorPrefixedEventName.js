@@ -44,10 +44,13 @@ const prefixedEventNames = {};
  */
 let style = {};
 
+// IE 6/7 has no transitions and animations.
+const isOldIE = /MSIE [67]/.test(navigator.userAgent);
+
 /**
  * Bootstrap if a DOM exists.
  */
-if (canUseDOM) {
+if (canUseDOM && !isOldIE) {
   style = document.createElement('div').style;
 
   // On some platforms, in particular some releases of Android 4.x,

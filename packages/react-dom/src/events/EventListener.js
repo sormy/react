@@ -12,7 +12,12 @@ export function addEventBubbleListener(
   eventType: string,
   listener: Function,
 ): void {
-  element.addEventListener(eventType, listener, false);
+  // IE 6/7 has no addEventListener() but has attachEvent()
+  if (element.addEventListener) {
+    element.addEventListener(eventType, listener, false);
+  } else if (element.attachEvent) {
+    element.attachEvent("on" + eventType, listener)
+  }
 }
 
 export function addEventCaptureListener(
@@ -20,5 +25,10 @@ export function addEventCaptureListener(
   eventType: string,
   listener: Function,
 ): void {
-  element.addEventListener(eventType, listener, true);
+  // IE 6/7 has no addEventListener() but has attachEvent()
+  if (element.addEventListener) {
+    element.addEventListener(eventType, listener, true);
+  } else if (element.attachEvent) {
+    element.attachEvent("on" + eventType, listener)
+  }
 }

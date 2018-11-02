@@ -3,11 +3,13 @@
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
- * @flow
  */
 
 import {TEXT_NODE} from '../shared/HTMLNodeType';
+import setInnerHTML from './setInnerHTML';
+import escapeTextForBrowser from '../server/escapeTextForBrowser';
+
+const hasTextContent = 'textContent' in document.documentElement;
 
 /**
  * Set the textContent property of a node. For text updates, it's faster
@@ -31,7 +33,12 @@ let setTextContent = function(node: Element, text: string): void {
       return;
     }
   }
-  node.textContent = text;
+  // IE 6/7 has no textContent property
+  if (hasTextContent) {
+    node.textContent = text;
+  } else {
+    setInnerHTML(node, escapeTextForBrowser(text));
+  }
 };
 
 export default setTextContent;
