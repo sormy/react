@@ -1,5 +1,9 @@
 # React for ancient IE 6/7
 
+**THIS IS REACT 14 BRANCH, IT IS STABLE AND READY FOR PROD.**
+
+**THERE IS ALSO DEVELOPMENT REACT 16 BRANCH, UNFORTUNATELY IT HAS ISSUES, NOT READY FOR PROD.**
+
 ## Goal
 
 The goal of this fork is to run React applications on Internet Explorer Mobile 6/7 running
@@ -17,6 +21,10 @@ See an example in `example` directory.
 ## Status
 
 This version works pretty stable, no memory leaks on IE 6/7.
+
+## Example
+
+Please look on "/example" directory to see how does it work.
 
 ## Altered packages
 
