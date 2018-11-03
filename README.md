@@ -1,5 +1,9 @@
 # React for ancient IE 6/7
 
+**THIS IS DEVELOPMENT REACT 16 BRANCH, UNFORTUNATELY IT HAS ISSUES, NOT READY FOR PROD.**
+
+**PLEASE USE REACT 16 BRANCH, IT IS STABLE AND READY FOR PROD.**
+
 ## Goal
 
 The goal of this fork is to run React applications on Internet Explorer Mobile 6/7 running
@@ -21,6 +25,10 @@ find a way to fix memory leak issue.
 
 Please use React 14.x version of this package if you need more stable React on IE6/7 without memory
 leaks but without Fragment support: https://github.com/sormy/react-ie/tree/0.14-stable-ie
+
+## Example
+
+Please look on "/example" directory to see how does it work.
 
 ## Altered packages
 
