@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>React Test</title>
+  <script>
+      (function () {
+        // Generic error handler that should catch all issues during application startup.
+        // Usefull for debugging issue on Windows CE devices (MC31/MC32).
+        // Will be overriden by application specific error handler once application will start.
+        var isIE = /MSIE [67]/.test(navigator.userAgent)
+        if (isIE) {
+          window.onerror = function (message, source, lineNo, colNo, error) {
+              if (error !== undefined) {
+                  alert("Unhandled error: " + message + ", source: " + source + ", lineNo: " + lineNo + ", colNo: " + colNo + ", error: " + error);
+              } else if (colNo !== undefined) {
+                  alert("Unhandled error: " + message + ", source: " + source + ", lineNo: " + lineNo + ", colNo: " + colNo);
+              } else {
+                  alert("Unhandled error: " + message + ", source: " + source + ", lineNo: " + lineNo);
+              }
+              return true;
+          }
+        }
+      })()
+  </script>
+  <link rel="stylesheet" href="/resources/app.css">
+  <!-- respond.js should be injected as earlier as possible after styles -->
+  <!--[if lte IE 8]>
+  <script src="/resources/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div id="react-root"></div>
+  <!--[if lte IE 8]>
+  <script src="/resources/firebug-lite/firebug-lite-debug.js">
+    {
+      debug: false,
+      overrideConsole: true,
+      disableXHRListener: true,
+      skinDir: '/resources/firebug-lite/skin/xp/'
+    }
+  </script>
+  <script src="/resources/polyfill-ie.js"></script>
+  <![endif]-->
+  <script src="/resources/vendor.js"></script>
+  <script src="/resources/app.js"></script>
+</body>
+</html>

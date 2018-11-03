@@ -19,6 +19,8 @@ var ReactPerf = require('ReactPerf');
 
 var invariant = require('invariant');
 
+var ExecutionEnvironment = require('ExecutionEnvironment');
+
 /**
  * Errors for properties that should not be updated with `updatePropertyByID()`.
  *
@@ -57,6 +59,17 @@ var ReactDOMIDOperations = {
     // from the DOM node instead of inadvertantly setting to a string. This
     // brings us in line with the same behavior we have on initial render.
     if (value != null) {
+      // IE 6/7 fix: for input and textarea we set data-ie-value attribute first
+      // to distinguish value setter made by JS from user event value changes
+      if (ExecutionEnvironment.canUseDOM && !!window.attachEvent
+          && name === 'value'
+          && (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA')) {
+        DOMPropertyOperations.setValueForProperty(
+          node,
+          'data-ie-value',
+          value
+        );
+      }
       DOMPropertyOperations.setValueForProperty(node, name, value);
     } else {
       DOMPropertyOperations.deleteValueForProperty(node, name);

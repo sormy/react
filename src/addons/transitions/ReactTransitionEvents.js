@@ -42,6 +42,11 @@ function detectEvents() {
   var testEl = document.createElement('div');
   var style = testEl.style;
 
+  // IE 6/7 have `style` property and no animation and transition events
+  if (style === undefined) {
+    return;
+  }
+
   // On some platforms, in particular some releases of Android 4.x,
   // the un-prefixed "animation" and "transition" properties are defined on the
   // style object but the events that fire will still be prefixed, so we need

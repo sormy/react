@@ -63,8 +63,9 @@ if (ExecutionEnvironment.canUseDOM) {
       // thin air on IE8, this only happens if there is no visible text
       // in-front of the non-visible tags. Piggyback on the whitespace fix
       // and simply check if any non-visible tags appear in the source.
+      // IE 6/7 fix: str.charAt(0) instead of str[0]
       if (WHITESPACE_TEST.test(html) ||
-          html[0] === '<' && NONVISIBLE_TEST.test(html)) {
+          html.charAt(0) === '<' && NONVISIBLE_TEST.test(html)) {
         // Recover leading whitespace by temporarily prepending any character.
         // \uFEFF has the potential advantage of being zero-width/invisible.
         // UglifyJS drops U+FEFF chars when parsing, so use String.fromCharCode

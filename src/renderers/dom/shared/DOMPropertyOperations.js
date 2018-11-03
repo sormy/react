@@ -23,6 +23,14 @@ var VALID_ATTRIBUTE_NAME_REGEX = /^[a-zA-Z_][\w\.\-]*$/;
 var illegalAttributeNameCache = {};
 var validatedAttributeNameCache = {};
 
+// Test if setting empty value to boolean property actually works as expected.
+// This test will fail for IE 6/7 and will pass for modern browsers.
+var supportsEmptyBoolProps = function () {
+  var input = document.createElement("input");
+  input.setAttribute("disabled", "");
+  return !!input.disabled;
+}();
+
 function isAttributeNameSafe(attributeName) {
   if (validatedAttributeNameCache.hasOwnProperty(attributeName)) {
     return true;
@@ -178,9 +186,17 @@ var DOMPropertyOperations = {
         // ('' + value) makes it output the correct toString()-value.
         if (namespace) {
           node.setAttributeNS(namespace, attributeName, '' + value);
-        } else if (propertyInfo.hasBooleanValue ||
-                   (propertyInfo.hasOverloadedBooleanValue && value === true)) {
-          node.setAttribute(attributeName, '');
+        } else if (propertyInfo.hasBooleanValue || propertyInfo.hasOverloadedBooleanValue && value === true) {
+          // IE 6/7 fix: attribute with empty value is treated as false in IE6/7
+          if (!supportsEmptyBoolProps) {
+            if (value) {
+              node.setAttribute(attributeName, '' + attributeName);
+            } else {
+              node.removeAttribute(attributeName);
+            }
+          } else {
+            node.setAttribute(attributeName, '');
+          }
         } else {
           node.setAttribute(attributeName, '' + value);
         }

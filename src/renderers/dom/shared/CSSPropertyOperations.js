@@ -26,10 +26,16 @@ var processStyleName = memoizeStringOnly(function(styleName) {
   return hyphenateStyleName(styleName);
 });
 
+// IE 6/7 fix: wrapper to properly access styles object
+function getStyles(element) {
+  return element.style || element.currentStyle;
+}
+
 var hasShorthandPropertyBug = false;
 var styleFloatAccessor = 'cssFloat';
 if (ExecutionEnvironment.canUseDOM) {
-  var tempStyle = document.createElement('div').style;
+  // IE 6/7 fix: wrapped into getStyles() to properly access styles object
+  var tempStyle = getStyles(document.createElement('div'));
   try {
     // IE8 throws "Invalid argument." if resetting shorthand style properties.
     tempStyle.font = '';
@@ -37,7 +43,8 @@ if (ExecutionEnvironment.canUseDOM) {
     hasShorthandPropertyBug = true;
   }
   // IE8 only supports accessing cssFloat (standard) as styleFloat
-  if (document.documentElement.style.cssFloat === undefined) {
+  // IE 6/7 fix: wrapped into getStyles() to properly access styles object
+  if (getStyles(document.documentElement).cssFloat === undefined) {
     styleFloatAccessor = 'styleFloat';
   }
 }
@@ -152,8 +159,9 @@ var CSSPropertyOperations = {
    * @param {DOMElement} node
    * @param {object} styles
    */
-  setValueForStyles: function(node, styles) {
-    var style = node.style;
+  setValueForStyles: function (node, styles) {
+    // IE 6/7 fix: wrapped into getStyles() to properly access styles object
+    var style = getStyles(node);
     for (var styleName in styles) {
       if (!styles.hasOwnProperty(styleName)) {
         continue;
