@@ -12,6 +12,8 @@ The test application is working well but it is working on IE6/7 much slower than
 I also found that React 16.x is leaking on IE6/7, most likely due to garbage collector bugs
 in IE6/7 (cross-references between DOM and JavaScript objects in fiber core).
 
+Inspired by these set of fixes: https://github.com/mtsyganov/react/commit/696726209554e8e6ba8ae8bdc843248922f822bf
+
 ## Status
 
 This version looks working but on some examples it is leaking. Feel free to submit a PR if you will
