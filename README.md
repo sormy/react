@@ -20,7 +20,7 @@ This version looks working but on some examples it is leaking. Feel free to subm
 find a way to fix memory leak issue.
 
 Please use React 14.x version of this package if you need more stable React on IE6/7 without memory
-leaks but without Fragment support: https://github.com/sormy/react-ie/tree/v0.14.8-ie6
+leaks but without Fragment support: https://github.com/sormy/react-ie/tree/0.14-stable-ie
 
 ## Altered packages
 
