@@ -27,7 +27,6 @@
     "@types/jquery": "^1.10.34",
     "@types/prop-types": "^15.5.6",
     "@types/react": "^16.4.15",
-    "@types/react-addons-shallow-compare": "^0.14.22",
     "@types/react-dom": "^16.0.8",
     "autoprefixer": "^9.1.5",
     "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
@@ -57,7 +56,7 @@
     "serve-dev": "rollup -cw --environment SERVE,NODE_ENV:development",
     "tsc": "tsc",
     "tslint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-    "kill-node-types": "rm -f ./node_modules/@types/node/index.d.ts",
+    "kill-node-types": "rm -rf ./node_modules/@types/node",
     "patch-rollup-commonjs": "test ! -f ./node_modules/rollup-plugin-commonjs/.patched && cd ./node_modules/rollup-plugin-commonjs && patch -p1 < ../../patches/rollup-plugin-commonjs-es3.patch && touch .patched || true",
     "postinstall": "npm run kill-node-types && npm run patch-rollup-commonjs"
   }
