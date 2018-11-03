@@ -26,6 +26,61 @@ This version works pretty stable, no memory leaks on IE 6/7.
 
 Please look on "/example" directory to see how does it work.
 
+Example requires latest Node. This example imports React sources as it is.
+
+## Building
+
+```
+# Install Node.JS 4.x
+brew install nvm
+mkdir ~/.nvm
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
+nvm install 4
+nvm use 4
+
+# clone repo
+git clone https://github.com/sormy/react-ie.git
+cd react-ie
+
+# build vanilla react
+git checkout 0.14-stable
+npm install
+npm run build
+
+# backup build artifacts
+mv build build.old
+
+# build patched react
+git checkout 0.14-stable-ie
+npm install
+npm run build
+
+# show diff for npm react
+diff -ur build.old/packages/react build/packages/react
+# show diff for npm react lib > react-0.14.9-ie.patch
+diff -ur build.old/packages/react/lib build/packages/react/lib > react-0.14.9-ie-lib.patch
+```
+
+## Usage
+
+The easiest way is to export difference as patch (see Building section).
+
+Then patch could be auto applied on npm installation phase, see example `package.json`:
+
+```
+{
+  "dependencies": {
+    "react": "^0.14.9",
+    "react-dom": "^0.14.9",
+  },
+  "scripts": {
+    "patch-react": "test ! -f ./node_modules/react/.patched && cd ./node_modules/react && patch -p3 < ../../patches/react-0.14.9-ie-lib.patch && touch .patched || true",
+    "postinstall": "npm run patch-react"
+  }
+}
+```
+
 ## Altered packages
 
 These packages were fixed for IE 6/7 compatibility:
