@@ -2,7 +2,7 @@
 
 **THIS IS DEVELOPMENT REACT 16 BRANCH, UNFORTUNATELY IT HAS ISSUES, NOT READY FOR PROD.**
 
-**PLEASE USE REACT 16 BRANCH, IT IS STABLE AND READY FOR PROD.**
+**PLEASE USE REACT 14 BRANCH, IT IS STABLE AND READY FOR PROD.**
 
 ## Goal
 
@@ -53,6 +53,8 @@ Vanilla React incompatibilities with IE 6/7:
 - no `focus`/`blur` events, use `focusin`/`focusout` instead
 - no `change`  event on input fields
 - `string[index]` is not available, use `string.charAt(index)` instead
+- animation/transition events are not available
+- `document.querySelectorAll()` is not available
 
 ## Transpilation
 
