@@ -158,10 +158,10 @@ if (ExecutionEnvironment.canUseDOM) {
  */
 /*
 var newValueProp = {
-  get: function() {
+  get: function () {
     return activeElementValueProp.get.call(this);
   },
-  set: function(val) {
+  set: function (val) {
     // Cast to a string so we can do equality checks.
     activeElementValue = '' + val;
     activeElementValueProp.set.call(this, val);
