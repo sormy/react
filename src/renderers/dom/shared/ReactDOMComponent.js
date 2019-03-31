@@ -923,11 +923,14 @@ ReactDOMComponent.Mixin = {
       if (propKey === STYLE) {
         if (nextProp) {
           if (__DEV__) {
+            // TODO: Too noisy on IE6/7, disabled for now, need to find root cause
+            /*
             checkAndWarnForMutatedStyle(
               this._previousStyleCopy,
               this._previousStyle,
               this
             );
+            */
             this._previousStyle = nextProp;
           }
           nextProp = this._previousStyleCopy = assign({}, nextProp);
