@@ -1,8 +1,6 @@
-# React for ancient IE 6/7
+# React for old IE 6/7
 
 **THIS IS REACT 14 BRANCH, IT IS STABLE AND READY FOR PROD.**
-
-**THERE IS ALSO DEVELOPMENT REACT 16 BRANCH, UNFORTUNATELY IT HAS ISSUES, NOT READY FOR PROD.**
 
 ## Goal
 
@@ -28,7 +26,7 @@ Please look on "/example" directory to see how does it work.
 
 Example requires latest Node. This example imports React sources as it is.
 
-## Building
+## Installing
 
 ```
 # Install Node.JS 4.x
@@ -81,33 +79,81 @@ Then patch could be auto applied on npm installation phase, see example `package
 }
 ```
 
-## Altered packages
+## Bundling
 
-These packages were fixed for IE 6/7 compatibility:
+Here is the recommended `babel@7` configuration to properly build source code:
 
-- react
-- react-dom
+```js
+module.exports = {
+  presets: [
+    // transform-function-name is breaking React 0.14.x: '_renderedComponent' is null or not an object
+    // generators are not supported on IE7, use fast-async instead in default promises mode
+    ["@babel/env", {
+      targets: ["IE 7"],
+      loose: true, /* es3 */
+      exclude: [
+        "transform-function-name",
+        "transform-regenerator",
+        "transform-async-to-generator"
+      ]
+    }],
+    ["@babel/react", { development: false }],
+    "@babel/typescript"
+  ],
+  plugins: [
+    ["@babel/proposal-class-properties",   { loose: true /* es3 */ }],
+    ["@babel/proposal-object-rest-spread", { loose: true /* es3 */ }],
+    // Transform es3 reserved keywords otherwise code won't be parsed
+    "transform-es3-member-expression-literals",
+    "transform-es3-property-literals",
+    // Adds support for async/await using Promises
+    "module:fast-async",
+    // Adds React component name that helps debugging on minified builds
+    "add-react-displayname",
+    // Replaces process.env.NODE_ENV during build time
+    "transform-inline-environment-variables",
+    // React optimizations to improve performation in production
+    "@babel/transform-react-constant-elements",
+    "@babel/transform-react-inline-elements",
+    // create-react-context depends on prop-types and could slow down all
+    // react contexts if not stripped out
+    "transform-react-remove-prop-types"
+  ]
+}
+```
 
-## Incompatibilities
+Polyfills:
 
-Vanilla React incompatibilities with IE 6/7:
+- stub error classes (used by shim):
+```js
+window.EvalError = window.Error
+window.InternalError = window.Error
+window.RangeError = window.Error
+window.ReferenceError = window.Error
+window.SyntaxError = window.Error
+window.TypeError = window.Error
+window.URIError = window.Error
+```
+- es5-shim / es5-sham
+- core-js for some stuff
 
-- `node.style` is not available
-- `hasAttribute()` is not available
-- `setAttribute(property, '')` removes the property instead of setting it
-- get/set propery descriptors are not available
-- no `change`  event on input fields
-- `string[index]` is not available, use `string.charAt(index)` instead
-- animation/transition events are not available
-- `document.querySelectorAll()` is not available
+Rollup configuration:
 
-## Transpilation
+- `freeze: false`
+- other issues that needs minor patching:
+  - rollup-plugin-commonjs: https://github.com/rollup/rollup-plugin-commonjs/issues/364
+  - babel: https://github.com/babel/babel/issues/9226
 
-The result file should be transpiled with the following options to run on IE 6/7:
+UglifyJS configuration:
 
-- target: es3 (or es5)
-- loose: true
-- es3 reserved keywords escaping
+```js
+{
+  ie8: true,
+  mangle: {
+    keep_fnames: true
+  }
+}
+```
 
 ## License
 
