@@ -12,9 +12,9 @@ This is the fork of React 0.14.x that is working on IE6/7.
 The test application is working well and much faster and stable on IE 6/7 than 16.6.x forked version:
 https://github.com/sormy/react-oldie/tree/16-dev-ie
 
-Inspired by these set of fixes: https://github.com/mtsyganov/react/commit/696726209554e8e6ba8ae8bdc843248922f822bf
+Inspired by this set of fixes: https://github.com/mtsyganov/react/commit/696726209554e8e6ba8ae8bdc843248922f822bf
 
-See an example in `example` directory.
+See an example in `example-oldie` directory.
 
 ## Status
 
@@ -81,7 +81,12 @@ Then patch could be auto applied on npm installation phase, see example `package
 
 ## Bundling
 
-Here is the recommended `babel@7` configuration to properly build source code:
+Build artifacts of this package can't be used on IE 6/7 without transpilation.
+
+I got it working using rollup + babel + polyfills + some minor patches. You could see
+a working example in `example-oldie` directory.
+
+Here is the recommended `babel@7` configuration to properly transpile source code:
 
 ```js
 module.exports = {
@@ -122,9 +127,10 @@ module.exports = {
 }
 ```
 
-Polyfills:
+Recommended Polyfills:
 
-- stub error classes (used by shim):
+- console stub
+- stub error classes (used by es5-shim / es5-sham):
 ```js
 window.EvalError = window.Error
 window.InternalError = window.Error
@@ -140,9 +146,11 @@ window.URIError = window.Error
 Rollup configuration:
 
 - `freeze: false`
-- other issues that needs minor patching:
-  - rollup-plugin-commonjs: https://github.com/rollup/rollup-plugin-commonjs/issues/364
-  - babel: https://github.com/babel/babel/issues/9226
+
+Other issues that needs minor patching:
+
+- rollup-plugin-commonjs: https://github.com/rollup/rollup-plugin-commonjs/issues/364
+- babel: https://github.com/babel/babel/issues/9226 (just for babel-plugin-transform-react-constant-elements)
 
 UglifyJS configuration:
 
