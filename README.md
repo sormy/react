@@ -22,7 +22,7 @@ This version works pretty stable, no memory leaks on IE 6/7.
 
 ## Example
 
-Please look on "/example" directory to see how does it work.
+Please look on `example-oldie` directory to see how does it work.
 
 Example requires latest Node. This example imports React sources as it is.
 
