@@ -117,11 +117,10 @@ module.exports = {
     "add-react-displayname",
     // Replaces process.env.NODE_ENV during build time
     "transform-inline-environment-variables",
-    // React optimizations to improve performation in production
+    // React optimizations to improve performance in production
     "@babel/transform-react-constant-elements",
     "@babel/transform-react-inline-elements",
-    // create-react-context depends on prop-types and could slow down all
-    // react contexts if not stripped out
+    // Strip PropTypes to improve performance in production
     "transform-react-remove-prop-types"
   ]
 }
@@ -140,8 +139,13 @@ window.SyntaxError = window.Error
 window.TypeError = window.Error
 window.URIError = window.Error
 ```
-- es5-shim / es5-sham
-- core-js for some stuff
+- `es5-shim` (es5-shim / es5-sham)
+- `core-js` for some stuff
+- `promise-polyfill` (optional)
+- `json3` polyfill (optional)
+- `typedarray` polyfill (optional)
+- `setimmediate-modular` polyfill (optional)
+- `requestAnimationFrame()` polyfill (optional)
 
 Rollup configuration:
 
