@@ -107,6 +107,10 @@ if (__DEV__) {
    * @param {*} value
    */
   var warnValidStyle = function(name, value) {
+    // ignore warnings about css variables
+    if (name.substr(0, 2) == "--") {
+      return
+    }
     if (name.indexOf('-') > -1) {
       warnHyphenatedStyleName(name);
     } else if (badVendoredStyleNamePattern.test(name)) {
