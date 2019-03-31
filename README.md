@@ -12,7 +12,7 @@ on Windows CE 6/7 (used on some embedded devices, like MC31/MC32 hand scanners).
 This is the fork of React 0.14.x that is working on IE6/7.
 
 The test application is working well and much faster and stable on IE 6/7 than 16.6.x forked version:
-https://github.com/sormy/react-ie/tree/16-dev-ie
+https://github.com/sormy/react-oldie/tree/16-dev-ie
 
 Inspired by these set of fixes: https://github.com/mtsyganov/react/commit/696726209554e8e6ba8ae8bdc843248922f822bf
 
@@ -40,8 +40,8 @@ nvm install 4
 nvm use 4
 
 # clone repo
-git clone https://github.com/sormy/react-ie.git
-cd react-ie
+git clone https://github.com/sormy/react-oldie.git
+cd react-oldie
 
 # build vanilla react
 git checkout 0.14-stable
