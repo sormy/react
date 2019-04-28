@@ -86,14 +86,14 @@ Build artifacts of this package can't be used on IE 6/7 without transpilation.
 I got it working using rollup + babel + polyfills + some minor patches. You could see
 a working example in `example-oldie` directory.
 
-Here is the recommended `babel@7` configuration to properly transpile source code:
+Full ES3 support is available in `babel@7` using `@babel/preset-env` since `v7.4.3`.
 
 ```js
 module.exports = {
   presets: [
     // transform-function-name is breaking React 0.14.x: '_renderedComponent' is null or not an object
     // generators are not supported on IE7, use fast-async instead in default promises mode
-    ["@babel/env", {
+    ["@babel/preset-env", {
       targets: ["IE 7"],
       loose: true, /* es3 */
       exclude: [
@@ -102,26 +102,23 @@ module.exports = {
         "transform-async-to-generator"
       ]
     }],
-    ["@babel/react", { development: false }],
-    "@babel/typescript"
+    ["@babel/preset-react", { development: false }],
+    "@babel/preset-typescript"
   ],
   plugins: [
-    ["@babel/proposal-class-properties",   { loose: true /* es3 */ }],
-    ["@babel/proposal-object-rest-spread", { loose: true /* es3 */ }],
-    // Transform es3 reserved keywords otherwise code won't be parsed
-    "transform-es3-member-expression-literals",
-    "transform-es3-property-literals",
+    ["@babel/plugin-proposal-class-properties",   { loose: true /* es3 */ }],
+    ["@babel/plugin-proposal-object-rest-spread", { loose: true /* es3 */ }],
     // Adds support for async/await using Promises
     "module:fast-async",
     // Adds React component name that helps debugging on minified builds
-    "add-react-displayname",
+    "babel-plugin-add-react-displayname",
     // Replaces process.env.NODE_ENV during build time
-    "transform-inline-environment-variables",
-    // React optimizations to improve performance in production
-    "@babel/transform-react-constant-elements",
-    "@babel/transform-react-inline-elements",
+    "babel-plugin-transform-inline-environment-variables",
     // Strip PropTypes to improve performance in production
-    "transform-react-remove-prop-types"
+    "babel-plugin-transform-react-remove-prop-types",
+    // React optimizations to improve performance in production
+    "@babel/plugin-transform-react-constant-elements",
+    "@babel/plugin-transform-react-inline-elements",
   ]
 }
 ```
