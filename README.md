@@ -26,10 +26,19 @@ Please look on `example-oldie` directory to see how does it work.
 
 Example requires latest Node. This example imports React sources as it is.
 
-## Installing
+## Usage - patch
+
+This is convinient way if you are not using precompiled build artifacts from `dist`
+folder and have your own rollup/wepack configuration that bundles react using
+source files.
+
+For this case it is just enough to update npm source files excluding `dist` files.
+You can build patch file and apply it on top of vanilla react in postinstall hook.
+
+### Building patch file
 
 ```
-# Install Node.JS 4.x
+# install node 4.x
 brew install nvm
 mkdir ~/.nvm
 export NVM_DIR="$HOME/.nvm"
@@ -56,17 +65,15 @@ npm run build
 
 # show diff for npm react
 diff -ur build.old/packages/react build/packages/react
-# show diff for npm react lib > react-0.14.9-ie.patch
+# save diff for npm react lib > react-0.14.9-ie.patch
 diff -ur build.old/packages/react/lib build/packages/react/lib > react-0.14.9-ie-lib.patch
 ```
 
-## Usage
+### Install hook
 
-The easiest way is to export difference as patch (see Building section).
+The patch could be auto applied on npm installation phase, see example `package.json`:
 
-Then patch could be auto applied on npm installation phase, see example `package.json`:
-
-```
+```json
 {
   "dependencies": {
     "react": "^0.14.9",
