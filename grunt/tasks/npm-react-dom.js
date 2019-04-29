@@ -44,7 +44,7 @@ function packRelease() {
   var done = this.async();
   var spawnCmd = {
     cmd: 'npm',
-    args: ['pack', 'react-dom'],
+    args: ['pack', './react-dom'],
     opts: {
       cwd: 'build/packages/',
     },

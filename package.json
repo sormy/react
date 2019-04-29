@@ -40,8 +40,8 @@
     "uglifyify": "^3.0.1"
   },
   "devEngines": {
-    "node": "4.x",
-    "npm": "2.x"
+    "node": "*",
+    "npm": "*"
   },
   "commonerConfig": {
     "version": 7
