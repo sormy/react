@@ -113,7 +113,7 @@ function packReleases() {
   addonKeys.forEach(function(k) {
     var info = addons[k];
     var pkgName = 'react-addons-' + info.name;
-    var pkgDir = 'build/packages/' + pkgName;
+    var pkgDir = './build/packages/' + pkgName;
 
     var spawnCmd = {
       cmd: 'npm',
