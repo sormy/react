@@ -37,15 +37,11 @@ You can build patch file and apply it on top of vanilla react in postinstall hoo
 
 ### Building patch file
 
-```
-# install node 4.x
-brew install nvm
-mkdir ~/.nvm
-export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"
-nvm install 4
-nvm use 4
+Branch `0.14-stable` is almost full copy of vanilla branch but has one small fix
+to successfully run build process on modern node, so building won't require nvm
+dark magic.
 
+```
 # clone repo
 git clone https://github.com/sormy/react-oldie.git
 cd react-oldie
