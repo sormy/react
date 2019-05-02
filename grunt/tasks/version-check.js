@@ -3,7 +3,7 @@
 var grunt = require('grunt');
 
 module.exports = function() {
-  var pkgVersion = grunt.config.data.pkg.version;
+  var pkgVersion = grunt.config.data.pkg.version.replace(/-oldie\.\d+$/, '')
 
   var addonsData = grunt.file.readJSON('./packages/react-addons/package.json');
   var versions = {

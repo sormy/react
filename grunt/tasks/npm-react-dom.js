@@ -51,7 +51,7 @@ function packRelease() {
   };
   grunt.util.spawn(spawnCmd, function() {
     fs.rename(
-      'build/packages/react-dom-' + grunt.config.data.pkg.version + '.tgz',
+      'build/packages/react-dom-' + grunt.config.data.pkg.version.replace(/-oldie\.\d+$/, '') + '.tgz',
       'build/packages/react-dom.tgz',
       done
     );

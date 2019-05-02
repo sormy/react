@@ -50,6 +50,7 @@ function buildRelease() {
   // modify build/react-core/package.json to set version ##
   var pkg = grunt.file.readJSON(dest + 'package.json');
   pkg.version = grunt.config.data.pkg.version;
+  pkg.name = pkg.name + "-oldie"
   grunt.file.write(dest + 'package.json', JSON.stringify(pkg, null, 2));
 }
 
@@ -63,7 +64,7 @@ function packRelease() {
     },
   };
   grunt.util.spawn(spawnCmd, function() {
-    var buildSrc = 'build/react-' + grunt.config.data.pkg.version + '.tgz';
+    var buildSrc = 'build/react-oldie-' + grunt.config.data.pkg.version + '.tgz';
     var buildDest = 'build/packages/react.tgz';
     fs.rename(buildSrc, buildDest, done);
   });

@@ -1,5 +1,8 @@
 # react
 
+**THIS IS UNOFFICIAL FORK OF REACT 0.14.X THAT ALSO SUPPORTS IE 6/7 IN ADDITION TO ALREADY
+SUPPORTED IE 8. READ MORE [HERE](https://github.com/sormy/react-oldie).**
+
 An npm package to get you immediate access to [React](https://facebook.github.io/react/),
 without also requiring the JSX transformer. This is especially useful for cases where you
 want to [`browserify`](https://github.com/substack/node-browserify) your module using

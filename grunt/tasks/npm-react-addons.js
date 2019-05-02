@@ -120,7 +120,7 @@ function packReleases() {
       args: ['pack', pkgDir],
     };
     grunt.util.spawn(spawnCmd, function() {
-      var buildSrc = pkgName + '-' + grunt.config.data.pkg.version + '.tgz';
+      var buildSrc = pkgName + '-' + grunt.config.data.pkg.version.replace(/-oldie\.\d+$/, '') + '.tgz';
       var buildDest = 'build/packages/' + pkgName + '.tgz';
       fs.rename(buildSrc, buildDest, maybeDone);
     });
