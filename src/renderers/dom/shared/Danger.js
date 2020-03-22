@@ -19,6 +19,8 @@ var emptyFunction = require('emptyFunction');
 var getMarkupWrap = require('getMarkupWrap');
 var invariant = require('invariant');
 
+var recycleDOMNode = require('recycleDOMNode');
+
 var OPEN_TAG_NAME_EXP = /^(<[^ \/>]+)/;
 var RESULT_INDEX_ATTR = 'data-danger-index';
 
@@ -182,6 +184,7 @@ var Danger = {
       newChild = markup;
     }
     oldChild.parentNode.replaceChild(newChild, oldChild);
+    recycleDOMNode(oldChild); // prevent mem leaks on IE6/7
   },
 
 };

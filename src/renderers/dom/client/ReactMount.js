@@ -35,6 +35,8 @@ var shouldUpdateReactComponent = require('shouldUpdateReactComponent');
 var validateDOMNesting = require('validateDOMNesting');
 var warning = require('warning');
 
+var recycleDOMNode = require('recycleDOMNode');
+
 var ATTR_NAME = DOMProperty.ID_ATTRIBUTE_NAME;
 var nodeCache = {};
 
@@ -344,9 +346,8 @@ function unmountComponentFromNode(instance, container) {
   }
 
   // http://jsperf.com/emptying-a-node
-  while (container.lastChild) {
-    container.removeChild(container.lastChild);
-  }
+  // IE7 requires release through innerHTML to prevent mem leaks
+  container.innerHTML = "";
 }
 
 /**
@@ -1020,6 +1021,7 @@ var ReactMount = {
             normalizer.contentDocument.write(markup);
             normalizedMarkup = normalizer.contentDocument.documentElement.outerHTML;
             document.body.removeChild(normalizer);
+            recycleDOMNode(normalizer); // prevent mem leaks on IE6/7
           }
         }
 
@@ -1067,9 +1069,8 @@ var ReactMount = {
     );
 
     if (transaction.useCreateElement) {
-      while (container.lastChild) {
-        container.removeChild(container.lastChild);
-      }
+      // IE7 requires release through innerHTML to prevent mem leaks
+      container.innerHTML = "";
       container.appendChild(markup);
     } else {
       setInnerHTML(container, markup);

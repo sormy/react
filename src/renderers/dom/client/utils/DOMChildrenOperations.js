@@ -20,6 +20,8 @@ var setInnerHTML = require('setInnerHTML');
 var setTextContent = require('setTextContent');
 var invariant = require('invariant');
 
+var recycleDOMNode = require("recycleDOMNode");
+
 /**
  * Inserts `childNode` as a child of `parentNode` at the `index`.
  *
@@ -111,6 +113,7 @@ var DOMChildrenOperations = {
     if (updatedChildren) {
       for (var j = 0; j < updatedChildren.length; j++) {
         updatedChildren[j].parentNode.removeChild(updatedChildren[j]);
+        recycleDOMNode(updatedChildren[j]); // prevent mem leaks on IE6/7
       }
     }
 

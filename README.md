@@ -42,6 +42,12 @@ to successfully run build process on modern node, so building won't require nvm
 dark magic.
 
 ```
+# use Node 10/11 to avoid "ReferenceError: primordials is not defined"
+# see https://stackoverflow.com/questions/55921442/how-to-fix-referenceerror-primordials-is-not-defined-in-node
+brew install nvm
+nvm install 11
+nvm use 11
+
 # clone repo
 git clone https://github.com/sormy/react-oldie.git
 cd react-oldie
@@ -60,9 +66,9 @@ npm install
 npm run build
 
 # show diff for npm react
-diff -ur build.old/packages/react build/packages/react
-# save diff for npm react lib > react-0.14.9-ie.patch
-diff -ur build.old/packages/react/lib build/packages/react/lib > react-0.14.9-ie-lib.patch
+diff -urN build.old/packages/react build/packages/react
+# save diff for npm react lib > react-0.14.9-oldie.patch
+diff -urN build.old/packages/react/lib build/packages/react/lib > react-0.14.9-oldie.patch
 ```
 
 ### Install hook

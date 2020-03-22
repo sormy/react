@@ -15,6 +15,8 @@
 
 var ExecutionEnvironment = require('ExecutionEnvironment');
 
+var recycleDOMNode = require('recycleDOMNode')
+
 var WHITESPACE_TEST = /^[ \r\n\t\f]/;
 var NONVISIBLE_TEST = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/;
 
@@ -79,6 +81,7 @@ if (ExecutionEnvironment.canUseDOM) {
         var textNode = node.firstChild;
         if (textNode.data.length === 1) {
           node.removeChild(textNode);
+          recycleDOMNode(textNode); // prevent mem leaks on IE6/7
         } else {
           textNode.deleteData(0, 1);
         }
