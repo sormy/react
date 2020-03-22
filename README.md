@@ -82,7 +82,7 @@ The patch could be auto applied on npm installation phase, see example `package.
     "react-dom": "^0.14.9",
   },
   "scripts": {
-    "patch-react": "test ! -f ./node_modules/react/.patched && cd ./node_modules/react && patch -p3 < ../../patches/react-0.14.9-ie-lib.patch && touch .patched || true",
+    "patch-react": "test ! -f ./node_modules/react/.patched && cd ./node_modules/react && patch -p3 < ../../patches/react-0.14.9-oldie.patch && touch .patched || true",
     "postinstall": "npm run patch-react"
   }
 }
